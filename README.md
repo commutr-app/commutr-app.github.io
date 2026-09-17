@@ -23,14 +23,12 @@ python -m http.server 8000
 
 ## The waitlist form
 
-Both email fields POST to FormSubmit, which relays each signup to the project inbox. The address is base64 in `WAITLIST_ENDPOINT` so crawlers that scrape page source for email addresses come up empty:
+Both email fields POST to FormSubmit, which relays each signup to the project inbox:
 
 ```js
-const WAITLIST_ENDPOINT = "https://formsubmit.co/ajax/" + atob("...");
+const WAITLIST_ENDPOINT = "https://formsubmit.co/ajax/a046b01c2af5a98a08e3c1b6fb1a5be3";
 ```
 
-That is obfuscation, not secrecy. FormSubmit's activation email carries a hashed endpoint (`formsubmit.co/ajax/<hash>`) that reaches the same inbox with no address in the page at all. Replace the whole expression with that string once you have it.
+That hash is FormSubmit's alias for the destination address, so the inbox never appears in the page source. Changing where signups land means generating a new alias from FormSubmit, not editing this file.
 
-FormSubmit does not deliver anything until the first submission is confirmed: submit the form once, then click the link it emails you.
-
-The form requires a `.edu` address client side.
+The form requires a `.edu` address client side, and the free tier caps out at 50 submissions per month.
