@@ -77,7 +77,6 @@
     color: var(--navy-600);
   }
 
-  /* ---------- nav ---------- */
   .nav {
     position: sticky;
     top: 0;
@@ -135,17 +134,10 @@
   }
   .btn-primary:hover { background: var(--navy-600); transform: translateY(-1px); }
   .btn-primary:active { transform: translateY(0); }
-  .btn-ghost {
-    background: transparent;
-    color: var(--ink);
-    border: 1px solid var(--line-strong);
-  }
-  .btn-ghost:hover { background: #fff; border-color: var(--navy); }
   .btn-light { background: #fff; color: var(--navy); }
   .btn-light:hover { background: #eaf0f8; transform: translateY(-1px); }
   .btn-sm { height: 40px; padding: 0 18px; font-size: 14px; }
 
-  /* ---------- hero ---------- */
   .hero {
     position: relative;
     padding: 72px 0 72px;
@@ -249,7 +241,6 @@
   .hero-trust span { display: inline-flex; align-items: center; gap: 8px; }
   .hero-trust svg { flex: none; color: var(--green); }
 
-  /* ---------- phone ---------- */
   .stage {
     position: relative;
     display: flex;
@@ -541,7 +532,6 @@
   }
   .app-tabs div.on { color: var(--navy); }
 
-  /* floating cards next to the phone */
   .float {
     position: absolute;
     z-index: 2;
@@ -578,8 +568,8 @@
   .float-a { top: 1%; left: -34px; animation: float 8s ease-in-out infinite .6s; }
   .float-b { bottom: 6%; right: -46px; animation: float 8s ease-in-out infinite 1.2s; }
 
-  /* ---------- sections ---------- */
   .section { padding: 92px 0; }
+  .section-tight { padding-top: 0; }
   .section-head { max-width: 640px; }
   .section-head h2 { margin-top: 16px; font-size: clamp(32px, 3.8vw, 44px); }
   .section-head p { margin-top: 16px; color: var(--muted); font-size: 18px; }
@@ -639,7 +629,6 @@
   .feature h3 { font-size: 18px; }
   .feature p { margin-top: 8px; color: var(--muted); font-size: 15.5px; }
 
-  /* drivers band */
   .band {
     background: linear-gradient(150deg, var(--navy), var(--navy-900));
     color: #fff;
@@ -651,7 +640,9 @@
     align-items: center;
     box-shadow: var(--shadow-md);
   }
-  .band h2 { font-size: clamp(28px, 3.4vw, 40px); }
+  .band .eyebrow { color: #7fb3e8; }
+  .band h2 { margin-top: 14px; font-size: clamp(28px, 3.4vw, 40px); }
+  .band .btn { margin-top: 26px; }
   .band p { margin-top: 16px; color: rgba(255,255,255,.72); font-size: 17px; max-width: 34em; }
   .band-list {
     display: grid;
@@ -670,17 +661,15 @@
   }
   .band-list svg { color: #4ade9e; flex: none; }
 
-  /* final CTA */
   .cta {
     text-align: center;
     padding: 64px 0 40px;
   }
-  .cta h2 { font-size: clamp(32px, 4.4vw, 50px); }
+  .cta h2 { margin-top: 18px; font-size: clamp(32px, 4.4vw, 50px); }
   .cta p { margin: 18px auto 0; max-width: 32em; color: var(--muted); font-size: 18px; }
   .cta .waitlist { margin: 32px auto 0; }
   .cta .form-note { text-align: center; }
 
-  /* footer */
   .footer {
     margin-top: 64px;
     background: var(--navy-900);
@@ -716,7 +705,6 @@
   }
   .heart { color: #ff6b6b; flex: none; }
 
-  /* ---------- responsive ---------- */
   @media (max-width: 960px) {
     .hero-grid { grid-template-columns: 1fr; gap: 56px; }
     .hero { padding: 56px 0 72px; }
@@ -773,7 +761,6 @@
 
 <main id="top">
 
-  <!-- ================= HERO ================= -->
   <section class="hero">
     <div class="wrap hero-grid">
       <div class="hero-inner">
@@ -808,7 +795,6 @@
         </div>
       </div>
 
-      <!-- ---------- phone ---------- -->
       <div class="stage">
         <div class="stage-glow" aria-hidden="true"></div>
 
@@ -944,7 +930,6 @@
     </div>
   </section>
 
-  <!-- ================= HOW IT WORKS ================= -->
   <section class="section" id="how">
     <div class="wrap">
       <div class="section-head">
@@ -973,8 +958,7 @@
     </div>
   </section>
 
-  <!-- ================= WHY ================= -->
-  <section class="section" id="why" style="padding-top:0;">
+  <section class="section section-tight" id="why">
     <div class="wrap">
       <div class="section-head">
         <span class="eyebrow">Why commutr</span>
@@ -1025,15 +1009,14 @@
     </div>
   </section>
 
-  <!-- ================= DRIVERS ================= -->
-  <section class="section" id="drivers" style="padding-top:0;">
+  <section class="section section-tight" id="drivers">
     <div class="wrap">
       <div class="band">
         <div>
-          <span class="eyebrow" style="color:#7fb3e8;">For drivers</span>
-          <h2 style="margin-top:14px;">You're driving in anyway. Bring three people with you.</h2>
+          <span class="eyebrow">For drivers</span>
+          <h2>You're driving in anyway. Bring three people with you.</h2>
           <p>Post your weekly schedule once: days, time blocks, seats, and what you charge. commutr fills the empty seats with verified students going exactly where you're already going.</p>
-          <a class="btn btn-light" href="#waitlist" style="margin-top:26px;">Start posting rides</a>
+          <a class="btn btn-light" href="#waitlist">Start posting rides</a>
         </div>
         <div class="band-list">
           <div>
@@ -1053,11 +1036,10 @@
     </div>
   </section>
 
-  <!-- ================= CTA ================= -->
   <section class="cta" id="waitlist">
     <div class="wrap">
       <span class="eyebrow">Coming to a campus near you</span>
-      <h2 style="margin-top:18px;">Get commutr at your school.</h2>
+      <h2>Get commutr at your school.</h2>
       <p>Drop your university email and we'll tell you the moment commutr opens where you are. Drivers first.</p>
 
       <form class="waitlist" novalidate>
@@ -1096,20 +1078,13 @@
 </footer>
 
 <script>
-  /* FormSubmit relays each signup to the project inbox. The address is base64 so that
-     address-harvesting crawlers, which regex the raw source for anything@anything, come up
-     empty. Anyone reading this script can still decode it, so the real fix is FormSubmit's
-     hashed endpoint: submit the form once, click the confirmation link it mails you, then
-     replace this whole expression with "https://formsubmit.co/ajax/<hash>". */
   const WAITLIST_ENDPOINT = "https://formsubmit.co/ajax/" + atob("cC5wcmFuYXZiYWxhY2hhbmRlckBnbWFpbC5jb20=");
 
-  // Nav hairline appears once you scroll.
   const nav = document.getElementById("nav");
   const onScroll = () => nav.classList.toggle("is-stuck", window.scrollY > 8);
   onScroll();
   window.addEventListener("scroll", onScroll, { passive: true });
 
-  // Jumping to a signup block should put the cursor in its email field.
   document.querySelectorAll('a[href="#join"], a[href="#waitlist"]').forEach((link) => {
     link.addEventListener("click", () => {
       const target = document.querySelector(link.getAttribute("href"));
@@ -1118,7 +1093,6 @@
     });
   });
 
-  // Waitlist forms (hero + bottom CTA share this behaviour).
   document.querySelectorAll("form.waitlist").forEach((form) => {
     const note = form.parentElement.querySelector("[data-note]");
     const input = form.querySelector("input");
@@ -1139,10 +1113,6 @@
       if (!email.toLowerCase().endsWith(".edu")) {
         return say("commutr is students only. Please use your .edu address.");
       }
-      if (!WAITLIST_ENDPOINT) {
-        return say("Waitlist isn't connected yet. Set WAITLIST_ENDPOINT in index.html.");
-      }
-
       button.disabled = true;
       say("Adding you…");
       try {

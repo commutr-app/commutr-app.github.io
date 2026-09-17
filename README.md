@@ -3,33 +3,34 @@
 One static page. No build step, no dependencies: `index.html` plus three images.
 
 ```
-docs/
-  index.html              the whole page (markup, styles, script inline)
-  assets/logo-navy.png    wordmark for light backgrounds (nav)
-  assets/logo-white.png   original wordmark (phone header, footer)
-  assets/favicon.png      infinity mark on navy
+index.html              markup, styles and script in one file
+assets/logo-navy.png    wordmark for light backgrounds (nav)
+assets/logo-white.png   wordmark for navy backgrounds (phone header, footer)
+assets/favicon.png      infinity mark on navy
 ```
 
 Both wordmarks are extracted from the original `commutr.png` (white on navy). The navy background was keyed out to give a clean white wordmark with alpha, and that same mask was recolored navy for the light header.
 
-## Deploying to GitHub Pages
+## Deploying
 
-Settings → Pages → Source: **Deploy from a branch**, branch `main`, folder **`/docs`**.
-
-To serve from the repo root instead, move the contents of `docs/` up one level and pick folder `/ (root)`.
+This repo is named `commutr-app.github.io`, so Pages serves it at the org root: https://commutr-app.github.io/. Source is *Deploy from a branch*, `main`, `/ (root)`. The `.nojekyll` file keeps GitHub's Jekyll step out of the way.
 
 ## Local preview
 
 ```sh
-python -m http.server 8000 --directory docs
+python -m http.server 8000
 ```
 
-## Wiring up the waitlist
+## The waitlist form
 
-Both email forms are inert until you give them an endpoint. Near the bottom of `index.html`:
+Both email fields POST to FormSubmit, which relays each signup to the project inbox. The address is base64 in `WAITLIST_ENDPOINT` so crawlers that scrape page source for email addresses come up empty:
 
 ```js
-const WAITLIST_ENDPOINT = "";   // e.g. https://formspree.io/f/xxxxxxx
+const WAITLIST_ENDPOINT = "https://formsubmit.co/ajax/" + atob("...");
 ```
 
-Paste a Formspree / Getform / Basin URL there and both forms POST to it. Until then the form says it isn't connected rather than pretending to sign people up. Client side it already requires a `.edu` address.
+That is obfuscation, not secrecy. FormSubmit's activation email carries a hashed endpoint (`formsubmit.co/ajax/<hash>`) that reaches the same inbox with no address in the page at all. Replace the whole expression with that string once you have it.
+
+FormSubmit does not deliver anything until the first submission is confirmed: submit the form once, then click the link it emails you.
+
+The form requires a `.edu` address client side.
