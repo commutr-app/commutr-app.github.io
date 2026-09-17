@@ -31,4 +31,4 @@ const WAITLIST_ENDPOINT = "https://formsubmit.co/ajax/a046b01c2af5a98a08e3c1b6fb
 
 That hash is FormSubmit's alias for the destination address, so the inbox never appears in the page source. Changing where signups land means generating a new alias from FormSubmit, not editing this file.
 
-The form requires a `.edu` address client side, and the free tier caps out at 50 submissions per month.
+The form requires a `.edu` address client side. FormSubmit does not cap submissions, but it only keeps an archive of them for 30 days, so the inbox is the record.

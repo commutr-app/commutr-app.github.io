@@ -199,7 +199,9 @@
     gap: 10px;
     max-width: 440px;
   }
-  .waitlist input {
+  .waitlist input[name="_honey"] { position: absolute; left: -9999px; opacity: 0; }
+
+  .waitlist input[type="email"] {
     flex: 1;
     min-width: 0;
     height: 52px;
@@ -775,6 +777,7 @@
           <input id="email-hero" type="email" name="email" aria-label="Your university email" placeholder="you@university.edu" autocomplete="email" required />
           <input type="hidden" name="_subject" value="New commutr waitlist signup" />
           <input type="hidden" name="_captcha" value="false" />
+          <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
           <button class="btn btn-primary" type="submit">Join the waitlist</button>
         </form>
         <p class="form-note" data-note role="status"></p>
@@ -1046,6 +1049,7 @@
         <input id="email-cta" type="email" name="email" aria-label="Your university email" placeholder="you@university.edu" autocomplete="email" required />
         <input type="hidden" name="_subject" value="New commutr waitlist signup" />
         <input type="hidden" name="_captcha" value="false" />
+        <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
         <button class="btn btn-primary" type="submit">Join the waitlist</button>
       </form>
       <p class="form-note" data-note role="status"></p>
