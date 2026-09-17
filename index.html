@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>commutr</title>
+<meta name="description" content="commutr matches off-campus students with verified classmates already driving to campus. Same route, same time, every week." />
+<meta property="og:title" content="commutr: your campus, connected" />
+<meta property="og:description" content="Recurring carpools between off-campus housing and campus, with verified .edu students only." />
+<meta property="og:type" content="website" />
+<link rel="icon" href="assets/favicon.png" type="image/png" />
+<link rel="apple-touch-icon" href="assets/favicon.png" />
+<link rel="preconnect" href="https://api.fontshare.com" />
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" />
+<style>
+  :root {
+    --navy: #002550;
+    --navy-600: #003d7a;
+    --navy-900: #001a3d;
+    --ink: #0d1b2a;
+    --muted: #5c6b7c;
+    --bg: #f5f7fa;
+    --card: #ffffff;
+    --line: rgba(0, 37, 80, 0.10);
+    --line-strong: rgba(0, 37, 80, 0.16);
+    --tint: #e9eff7;
+    --green: #0f8f66;
+    --green-soft: #e6f5ef;
+    --radius: 18px;
+    --shadow-sm: 0 1px 2px rgba(0, 37, 80, .06), 0 4px 12px rgba(0, 37, 80, .05);
+    --shadow-md: 0 2px 6px rgba(0, 37, 80, .06), 0 18px 40px rgba(0, 37, 80, .10);
+    --shadow-xl: 0 30px 70px rgba(0, 26, 61, .28), 0 4px 14px rgba(0, 26, 61, .14);
+    --max: 1140px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Satoshi', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3 { margin: 0; line-height: 1.08; letter-spacing: -0.03em; font-weight: 900; }
+  p { margin: 0; }
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; height: auto; }
+
+  :focus-visible {
+    outline: 2px solid var(--navy-600);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  #join, #waitlist, #how, #why, #drivers { scroll-margin-top: 96px; }
+
+  .wrap {
+    width: 100%;
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .eyebrow {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--navy-600);
+  }
+
+  /* ---------- nav ---------- */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(245, 247, 250, .78);
+    backdrop-filter: saturate(180%) blur(14px);
+    -webkit-backdrop-filter: saturate(180%) blur(14px);
+    border-bottom: 1px solid transparent;
+    transition: border-color .25s ease, background .25s ease;
+  }
+  .nav.is-stuck { border-bottom-color: var(--line); }
+
+  .nav-inner {
+    height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .nav-logo img { width: 126px; }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--muted);
+  }
+  .nav-links a { transition: color .18s ease; }
+  .nav-links a:hover { color: var(--ink); }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 46px;
+    padding: 0 22px;
+    border: 0;
+    border-radius: 999px;
+    font: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: transform .16s ease, box-shadow .18s ease, background .18s ease, color .18s ease;
+  }
+  .btn-primary {
+    background: var(--navy);
+    color: #fff;
+    box-shadow: 0 1px 2px rgba(0,37,80,.2), 0 8px 20px rgba(0,37,80,.18);
+  }
+  .btn-primary:hover { background: var(--navy-600); transform: translateY(-1px); }
+  .btn-primary:active { transform: translateY(0); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--line-strong);
+  }
+  .btn-ghost:hover { background: #fff; border-color: var(--navy); }
+  .btn-light { background: #fff; color: var(--navy); }
+  .btn-light:hover { background: #eaf0f8; transform: translateY(-1px); }
+  .btn-sm { height: 40px; padding: 0 18px; font-size: 14px; }
+
+  /* ---------- hero ---------- */
+  .hero {
+    position: relative;
+    padding: 72px 0 72px;
+  }
+
+  .hero::before,
+  .hero::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(70px);
+    z-index: 0;
+    pointer-events: none;
+  }
+  .hero::before {
+    width: 720px; height: 720px;
+    right: -180px; top: -280px;
+    background: radial-gradient(circle, rgba(0,61,122,.16), rgba(0,61,122,0) 66%);
+  }
+  .hero::after {
+    width: 520px; height: 520px;
+    left: -220px; bottom: -180px;
+    background: radial-gradient(circle, rgba(15,143,102,.12), rgba(15,143,102,0) 68%);
+  }
+
+  .hero-grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1.02fr 0.98fr;
+    gap: 56px;
+    align-items: start;
+  }
+
+  .hero-inner { padding-top: 0; }
+  .hero-inner .eyebrow { margin-bottom: 18px; }
+
+  .hero h1 {
+    margin: 0;
+    font-size: clamp(42px, 5.6vw, 66px);
+  }
+  .hero h1 .accent {
+    background: linear-gradient(100deg, var(--navy-600), #0f8f66);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .hero-sub {
+    margin-top: 22px;
+    max-width: 30em;
+    font-size: clamp(17px, 1.5vw, 19px);
+    color: var(--muted);
+  }
+
+  .waitlist {
+    margin-top: 32px;
+    display: flex;
+    gap: 10px;
+    max-width: 440px;
+  }
+  .waitlist input {
+    flex: 1;
+    min-width: 0;
+    height: 52px;
+    padding: 0 18px;
+    font: inherit;
+    font-size: 15px;
+    color: var(--ink);
+    background: #fff;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    box-shadow: var(--shadow-sm);
+    transition: border-color .18s ease, box-shadow .18s ease;
+  }
+  .waitlist input::placeholder { color: #93a1b0; }
+  .waitlist input:focus {
+    outline: none;
+    border-color: var(--navy);
+    box-shadow: 0 0 0 4px rgba(0,37,80,.10);
+  }
+  .waitlist .btn { height: 52px; padding: 0 26px; }
+
+  .form-note {
+    margin-top: 12px;
+    min-height: 20px;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .form-note.is-good { color: var(--green); font-weight: 500; }
+
+  .hero-trust {
+    margin-top: 26px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 22px;
+    font-size: 14.5px;
+    font-weight: 500;
+    color: var(--muted);
+  }
+  .hero-trust span { display: inline-flex; align-items: center; gap: 8px; }
+  .hero-trust svg { flex: none; color: var(--green); }
+
+  /* ---------- phone ---------- */
+  .stage {
+    position: relative;
+    display: flex;
+    justify-content: center;
+  }
+
+  .stage-glow {
+    position: absolute;
+    inset: 8% -6% 2%;
+    background: radial-gradient(60% 55% at 50% 45%, rgba(0,37,80,.16), rgba(0,37,80,0) 70%);
+    filter: blur(20px);
+    z-index: 0;
+  }
+
+  .phone {
+    position: relative;
+    z-index: 1;
+    width: 316px;
+    height: 646px;
+    padding: 11px;
+    border-radius: 54px;
+    background: linear-gradient(165deg, #1b2a3d, #050d18 55%, #12202f);
+    box-shadow: var(--shadow-xl), inset 0 0 0 1px rgba(255,255,255,.16);
+    animation: float 8s ease-in-out infinite;
+  }
+
+  .phone::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 22px;
+    transform: translateX(-50%);
+    width: 86px;
+    height: 24px;
+    border-radius: 999px;
+    background: #050d18;
+    z-index: 3;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+
+  .screen {
+    position: relative;
+    height: 100%;
+    border-radius: 44px;
+    overflow: hidden;
+    background: #f4f6f9;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .app-head {
+    background: linear-gradient(160deg, var(--navy), var(--navy-900));
+    color: #fff;
+    padding: 46px 18px 16px;
+    flex: none;
+  }
+  .app-head-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .app-head-top img { width: 92px; opacity: .97; }
+  .app-avatar {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.18);
+    display: grid;
+    place-items: center;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .02em;
+  }
+  .app-route {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -.01em;
+  }
+  .app-route .dash {
+    flex: 1;
+    height: 1px;
+    background: repeating-linear-gradient(90deg, rgba(255,255,255,.5) 0 5px, transparent 5px 10px);
+  }
+  .app-meta {
+    margin-top: 6px;
+    font-size: 11.5px;
+    white-space: nowrap;
+    color: rgba(255,255,255,.65);
+    font-weight: 500;
+  }
+
+  .app-chips {
+    flex: none;
+    display: flex;
+    gap: 7px;
+    padding: 14px 18px 10px;
+    background: #f4f6f9;
+  }
+  .chip {
+    font-size: 11.5px;
+    font-weight: 700;
+    padding: 6px 11px;
+    border-radius: 999px;
+    background: #fff;
+    border: 1px solid var(--line);
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .chip.on { background: var(--navy); border-color: var(--navy); color: #fff; }
+
+  .app-list {
+    flex: 1;
+    padding: 4px 18px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(#000 82%, rgba(0, 0, 0, .25));
+    mask-image: linear-gradient(#000 82%, rgba(0, 0, 0, .25));
+  }
+
+  .ride {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 13px;
+    box-shadow: 0 1px 2px rgba(0,37,80,.05);
+    opacity: 0;
+    transform: translateY(14px);
+    animation: rise .7s cubic-bezier(.2,.7,.3,1) forwards;
+  }
+  .ride:nth-child(1) { animation-delay: .25s; }
+  .ride:nth-child(2) { animation-delay: .4s; }
+  .ride:nth-child(3) { animation-delay: .55s; }
+
+  @keyframes rise {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .ride-top { display: flex; align-items: center; gap: 10px; }
+  .ride-face {
+    width: 36px; height: 36px;
+    flex: none;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(150deg, #00437f, #002550);
+  }
+  .ride-face.b { background: linear-gradient(150deg, #0f8f66, #0a6248); }
+  .ride-face.c { background: linear-gradient(150deg, #4a5f88, #2a3a5c); }
+  .ride-name {
+    font-size: 13.5px;
+    font-weight: 700;
+    letter-spacing: -.01em;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .ride-name svg { color: var(--green); flex: none; }
+  .ride-sub {
+    font-size: 11.5px;
+    color: var(--muted);
+    font-weight: 500;
+    margin-top: 1px;
+  }
+  .ride-price {
+    margin-left: auto;
+    text-align: right;
+    font-size: 15px;
+    font-weight: 900;
+    letter-spacing: -.02em;
+  }
+  .ride-price small {
+    display: block;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--muted);
+    letter-spacing: 0;
+  }
+
+  .ride-line {
+    margin-top: 11px;
+    padding-top: 11px;
+    border-top: 1px dashed var(--line);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .ride-line .seats { margin-left: auto; color: var(--green); font-weight: 700; }
+
+  .ride-cta {
+    margin-top: 11px;
+    height: 34px;
+    border-radius: 10px;
+    background: var(--navy);
+    color: #fff;
+    font-size: 12.5px;
+    font-weight: 700;
+    display: grid;
+    place-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .ride-cta span {
+    grid-area: 1 / 1;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .ride-cta .label-book { animation: swapOut 9s ease-in-out infinite; }
+  .ride-cta .label-done { opacity: 0; animation: swapIn 9s ease-in-out infinite; }
+  .ride.is-featured { animation-delay: .25s; }
+  .ride.is-featured .ride-cta { animation: ctaFill 9s ease-in-out infinite; }
+
+  @keyframes ctaFill {
+    0%, 42% { background: var(--navy); }
+    50%, 88% { background: var(--green); }
+    96%, 100% { background: var(--navy); }
+  }
+  @keyframes swapOut {
+    0%, 42% { opacity: 1; transform: translateY(0); }
+    50%, 88% { opacity: 0; transform: translateY(-8px); }
+    96%, 100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes swapIn {
+    0%, 42% { opacity: 0; transform: translateY(8px); }
+    50%, 88% { opacity: 1; transform: translateY(0); }
+    96%, 100% { opacity: 0; transform: translateY(8px); }
+  }
+
+  .app-toast {
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    bottom: 74px;
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 11px 13px;
+    border-radius: 14px;
+    background: rgba(13, 27, 42, .94);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    box-shadow: 0 12px 30px rgba(0,26,61,.3);
+    opacity: 0;
+    transform: translateY(16px);
+    animation: toast 9s ease-in-out infinite;
+  }
+  .app-toast svg { color: #4ade9e; flex: none; }
+
+  @keyframes toast {
+    0%, 46% { opacity: 0; transform: translateY(16px); }
+    54%, 84% { opacity: 1; transform: translateY(0); }
+    92%, 100% { opacity: 0; transform: translateY(16px); }
+  }
+
+  .app-tabs {
+    flex: none;
+    height: 62px;
+    background: #fff;
+    border-top: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    align-items: center;
+    padding-bottom: 8px;
+  }
+  .app-tabs div {
+    display: grid;
+    place-items: center;
+    gap: 3px;
+    font-size: 9px;
+    font-weight: 700;
+    color: #9aa7b4;
+  }
+  .app-tabs div.on { color: var(--navy); }
+
+  /* floating cards next to the phone */
+  .float {
+    position: absolute;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 15px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    box-shadow: var(--shadow-md);
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: -.01em;
+    white-space: nowrap;
+  }
+  .float small {
+    display: block;
+    font-size: 10.5px;
+    font-weight: 600;
+    color: var(--muted);
+    letter-spacing: 0;
+  }
+  .float-badge {
+    width: 30px; height: 30px;
+    border-radius: 9px;
+    display: grid;
+    place-items: center;
+    background: var(--green-soft);
+    color: var(--green);
+    flex: none;
+  }
+  .float-badge.navy { background: var(--tint); color: var(--navy); }
+  .float-a { top: 1%; left: -34px; animation: float 8s ease-in-out infinite .6s; }
+  .float-b { bottom: 6%; right: -46px; animation: float 8s ease-in-out infinite 1.2s; }
+
+  /* ---------- sections ---------- */
+  .section { padding: 92px 0; }
+  .section-head { max-width: 640px; }
+  .section-head h2 { margin-top: 16px; font-size: clamp(32px, 3.8vw, 44px); }
+  .section-head p { margin-top: 16px; color: var(--muted); font-size: 18px; }
+
+  .steps {
+    margin-top: 52px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+  }
+  .step {
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 28px 24px 26px;
+    box-shadow: var(--shadow-sm);
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  }
+  .step:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--line-strong); }
+  .step-num {
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: .1em;
+    color: var(--navy-600);
+    opacity: .55;
+  }
+  .step h3 { margin-top: 14px; font-size: 21px; }
+  .step p { margin-top: 10px; color: var(--muted); font-size: 15.5px; }
+
+  .features {
+    margin-top: 52px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+  }
+  .feature {
+    display: flex;
+    gap: 16px;
+    padding: 26px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  }
+  .feature:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--line-strong); }
+  .feature-icon {
+    width: 42px; height: 42px;
+    flex: none;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    background: var(--tint);
+    color: var(--navy);
+  }
+  .feature h3 { font-size: 18px; }
+  .feature p { margin-top: 8px; color: var(--muted); font-size: 15.5px; }
+
+  /* drivers band */
+  .band {
+    background: linear-gradient(150deg, var(--navy), var(--navy-900));
+    color: #fff;
+    border-radius: 28px;
+    padding: 54px 52px;
+    display: grid;
+    grid-template-columns: 1.15fr .85fr;
+    gap: 40px;
+    align-items: center;
+    box-shadow: var(--shadow-md);
+  }
+  .band h2 { font-size: clamp(28px, 3.4vw, 40px); }
+  .band p { margin-top: 16px; color: rgba(255,255,255,.72); font-size: 17px; max-width: 34em; }
+  .band-list {
+    display: grid;
+    gap: 12px;
+  }
+  .band-list div {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .band-list svg { color: #4ade9e; flex: none; }
+
+  /* final CTA */
+  .cta {
+    text-align: center;
+    padding: 64px 0 40px;
+  }
+  .cta h2 { font-size: clamp(32px, 4.4vw, 50px); }
+  .cta p { margin: 18px auto 0; max-width: 32em; color: var(--muted); font-size: 18px; }
+  .cta .waitlist { margin: 32px auto 0; }
+  .cta .form-note { text-align: center; }
+
+  /* footer */
+  .footer {
+    margin-top: 64px;
+    background: var(--navy-900);
+    color: rgba(255,255,255,.62);
+  }
+  .footer-inner {
+    padding: 44px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .footer img { width: 138px; }
+  .footer-tag { margin-top: 10px; font-size: 14px; }
+  .footer-links { display: flex; gap: 26px; font-size: 14.5px; font-weight: 500; }
+  .footer-links a:hover { color: #fff; }
+  .footer-legal {
+    border-top: 1px solid rgba(255,255,255,.1);
+    padding: 18px 20px 26px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px 18px;
+    font-size: 13px;
+    color: rgba(255,255,255,.42);
+  }
+  .made-in {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .heart { color: #ff6b6b; flex: none; }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 960px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 56px; }
+    .hero { padding: 56px 0 72px; }
+    .hero-sub, .waitlist { margin-left: auto; margin-right: auto; }
+    .hero-inner { text-align: center; }
+    .hero-trust { justify-content: center; }
+    .steps { grid-template-columns: 1fr; }
+    .features { grid-template-columns: 1fr; }
+    .band { grid-template-columns: 1fr; padding: 40px 28px; border-radius: 22px; }
+    .nav-links { display: none; }
+    .section { padding: 72px 0; }
+  }
+
+  @media (max-width: 700px) {
+    .float { display: none; }
+  }
+
+  @media (max-width: 460px) {
+    body { font-size: 16px; }
+    .phone { transform: scale(.92); transform-origin: top center; }
+    .float-a { left: -4px; }
+    .float-b { right: -4px; }
+    .waitlist { flex-direction: column; }
+    .waitlist .btn { width: 100%; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: .001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: .001ms !important;
+    }
+    .ride { opacity: 1; transform: none; }
+    .app-toast { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="wrap nav-inner">
+    <a class="nav-logo" href="#top" aria-label="commutr home">
+      <img src="assets/logo-navy.png" alt="commutr" width="291" height="45" />
+    </a>
+    <nav class="nav-links" aria-label="Main">
+      <a href="#how">How it works</a>
+      <a href="#why">Why commutr</a>
+      <a href="#drivers">For drivers</a>
+    </nav>
+    <a class="btn btn-primary btn-sm" href="#join">Join the waitlist</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-inner">
+        <span class="eyebrow">Same route, same time, every week</span>
+        <h1>Your campus,<br /><span class="accent">connected.</span></h1>
+        <p class="hero-sub">
+          Someone from your apartment complex is already driving to your 8&nbsp;a.m.
+          commutr finds them, saves you the seat, and repeats it every week.
+        </p>
+
+        <form class="waitlist" id="join" novalidate>
+          <input id="email-hero" type="email" name="email" aria-label="Your university email" placeholder="you@university.edu" autocomplete="email" required />
+          <input type="hidden" name="_subject" value="New commutr waitlist signup" />
+          <input type="hidden" name="_captcha" value="false" />
+          <button class="btn btn-primary" type="submit">Join the waitlist</button>
+        </form>
+        <p class="form-note" data-note role="status"></p>
+
+        <div class="hero-trust">
+          <span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            Verified .edu students only
+          </span>
+          <span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            Recurring weekly seats
+          </span>
+          <span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            Flat cost per seat
+          </span>
+        </div>
+      </div>
+
+      <!-- ---------- phone ---------- -->
+      <div class="stage">
+        <div class="stage-glow" aria-hidden="true"></div>
+
+        <div class="float float-a" aria-hidden="true">
+          <span class="float-badge">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.5 3.2 8.3 8 9 4.8-.7 8-4.5 8-9V6l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+          </span>
+          <span>.edu verified<small>Every rider, every driver</small></span>
+        </div>
+
+        <div class="float float-b" aria-hidden="true">
+          <span class="float-badge navy">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h3l2-5h8l2 5h3"/><path d="M5 12v5h14v-5"/><circle cx="7.5" cy="17.5" r="1.5"/><circle cx="16.5" cy="17.5" r="1.5"/></svg>
+          </span>
+          <span>$3.00 a seat<small>Set by the driver, split up front</small></span>
+        </div>
+
+        <div class="phone" role="img" aria-label="The commutr app showing available weekly rides from Campus Heights to campus on Monday at 7:40 AM.">
+          <div class="screen">
+            <div class="app-head">
+              <div class="app-head-top">
+                <img src="assets/logo-white.png" alt="" width="291" height="45" />
+                <span class="app-avatar">AR</span>
+              </div>
+              <div class="app-route">
+                <span>Campus Heights</span>
+                <span class="dash"></span>
+                <span>Campus</span>
+              </div>
+              <div class="app-meta">Monday · 7:40 AM pickup · 4 rides</div>
+            </div>
+
+            <div class="app-chips">
+              <span class="chip on">Mon</span>
+              <span class="chip">Tue</span>
+              <span class="chip">Wed</span>
+              <span class="chip">Thu</span>
+              <span class="chip">Fri</span>
+            </div>
+
+            <div class="app-list">
+              <article class="ride is-featured">
+                <div class="ride-top">
+                  <span class="ride-face">MC</span>
+                  <div>
+                    <div class="ride-name">
+                      Michael C.
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 9.6 4.4 6.2 4l-.4 3.4L2.8 9.6 5 12l-2.2 2.4 3 2.2.4 3.4 3.4-.4L12 22l2.4-2.4 3.4.4.4-3.4 3-2.2L19 12l2.2-2.4-3-2.2-.4-3.4-3.4.4Z" opacity=".18"/><path d="M12 1.6 9.4 4l-3.5-.4-.4 3.5L2.6 9.7 4.9 12l-2.3 2.3 2.9 2.6.4 3.5 3.5-.4L12 22.4 14.6 20l3.5.4.4-3.5 2.9-2.6L19.1 12l2.3-2.3-2.9-2.6-.4-3.5-3.5.4L12 1.6Zm-1 13.6-3-3 1.3-1.3L11 12.6l4.7-4.7L17 9.2l-6 6Z"/></svg>
+                    </div>
+                    <div class="ride-sub">4.9 ★ · Toyota Camry</div>
+                  </div>
+                  <div class="ride-price">$3.00<small>per seat</small></div>
+                </div>
+                <div class="ride-line">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                  7:40 AM · picks up at the lot
+                  <span class="seats">3 seats</span>
+                </div>
+                <div class="ride-cta">
+                  <span class="label-book">Book this seat</span>
+                  <span class="label-done">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                    Seat booked
+                  </span>
+                </div>
+              </article>
+
+              <article class="ride">
+                <div class="ride-top">
+                  <span class="ride-face b">SJ</span>
+                  <div>
+                    <div class="ride-name">
+                      Sarah J.
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.6 9.4 4l-3.5-.4-.4 3.5L2.6 9.7 4.9 12l-2.3 2.3 2.9 2.6.4 3.5 3.5-.4L12 22.4 14.6 20l3.5.4.4-3.5 2.9-2.6L19.1 12l2.3-2.3-2.9-2.6-.4-3.5-3.5.4L12 1.6Zm-1 13.6-3-3 1.3-1.3L11 12.6l4.7-4.7L17 9.2l-6 6Z"/></svg>
+                    </div>
+                    <div class="ride-sub">5.0 ★ · Honda Civic</div>
+                  </div>
+                  <div class="ride-price">$2.50<small>per seat</small></div>
+                </div>
+                <div class="ride-line">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                  7:45 AM · Nittany Place
+                  <span class="seats">2 seats</span>
+                </div>
+              </article>
+
+              <article class="ride">
+                <div class="ride-top">
+                  <span class="ride-face c">JR</span>
+                  <div>
+                    <div class="ride-name">
+                      James R.
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.6 9.4 4l-3.5-.4-.4 3.5L2.6 9.7 4.9 12l-2.3 2.3 2.9 2.6.4 3.5 3.5-.4L12 22.4 14.6 20l3.5.4.4-3.5 2.9-2.6L19.1 12l2.3-2.3-2.9-2.6-.4-3.5-3.5.4L12 1.6Zm-1 13.6-3-3 1.3-1.3L11 12.6l4.7-4.7L17 9.2l-6 6Z"/></svg>
+                    </div>
+                    <div class="ride-sub">4.8 ★ · Subaru Outback</div>
+                  </div>
+                  <div class="ride-price">$4.00<small>per seat</small></div>
+                </div>
+                <div class="ride-line">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                  7:50 AM · Nittany Village
+                  <span class="seats">4 seats</span>
+                </div>
+              </article>
+            </div>
+
+            <div class="app-toast">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              Booked every Monday · Michael C. · 7:40 AM
+            </div>
+
+            <div class="app-tabs" aria-hidden="true">
+              <div class="on">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+                Find
+              </div>
+              <div>
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 11h18"/></svg>
+                My rides
+              </div>
+              <div>
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+                Post
+              </div>
+              <div>
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg>
+                Profile
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= HOW IT WORKS ================= -->
+  <section class="section" id="how">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">How it works</span>
+        <h2>Three taps between your bed and your lecture hall.</h2>
+        <p>No surge pricing, no strangers, no 6:30 bus. Just the people already making your exact trip.</p>
+      </div>
+
+      <div class="steps">
+        <article class="step">
+          <div class="step-num">01</div>
+          <h3>Verify your .edu</h3>
+          <p>Sign up with your university email. Everyone on commutr is a real, verified student at your school. No one else gets in.</p>
+        </article>
+        <article class="step">
+          <div class="step-num">02</div>
+          <h3>Find your route</h3>
+          <p>Pick the day, the time block and your pickup point. See exactly who's driving that trip, what they drive, and what they charge.</p>
+        </article>
+        <article class="step">
+          <div class="step-num">03</div>
+          <h3>Keep the seat</h3>
+          <p>Book once and it repeats every week. Same driver, same 7:40, same $3, and a tap to cancel when class does.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= WHY ================= -->
+  <section class="section" id="why" style="padding-top:0;">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Why commutr</span>
+        <h2>Rideshare apps weren't built for a 10-minute commute you make 400 times a year.</h2>
+      </div>
+
+      <div class="features">
+        <article class="feature">
+          <span class="feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.5 3.2 8.3 8 9 4.8-.7 8-4.5 8-9V6l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+          </span>
+          <div>
+            <h3>Students only, verified</h3>
+            <p>Every account is tied to a university email, and every trip ends with a rating. You're riding with classmates, not the internet.</p>
+          </div>
+        </article>
+
+        <article class="feature">
+          <span class="feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2v4M7 2v4M3 10h18"/><rect x="3" y="4" width="18" height="18" rx="3"/><path d="m8.5 15.5 2 2 4-4"/></svg>
+          </span>
+          <div>
+            <h3>Built for the repeat</h3>
+            <p>commutr is designed around your schedule, not one-off trips. Post or book a recurring ride once and the whole semester is handled.</p>
+          </div>
+        </article>
+
+        <article class="feature">
+          <span class="feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-5.2 7-11a7 7 0 1 0-14 0c0 5.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.6"/></svg>
+          </span>
+          <div>
+            <h3>Pickups where you live</h3>
+            <p>Rides start at real places: your complex, your lot, your corner. Never a pin you have to walk five minutes to find.</p>
+          </div>
+        </article>
+
+        <article class="feature">
+          <span class="feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M14.5 9.2a2.7 2.7 0 0 0-2.5-1.4c-1.5 0-2.6.8-2.6 2s1.1 1.7 2.6 2 2.7.8 2.7 2.1-1.2 2-2.7 2a2.8 2.8 0 0 1-2.6-1.5M12 6v12"/></svg>
+          </span>
+          <div>
+            <h3>A price, not a fare</h3>
+            <p>Drivers set a flat cost per seat to cover gas and parking. You see it before you book, and it doesn't move because it started raining.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= DRIVERS ================= -->
+  <section class="section" id="drivers" style="padding-top:0;">
+    <div class="wrap">
+      <div class="band">
+        <div>
+          <span class="eyebrow" style="color:#7fb3e8;">For drivers</span>
+          <h2 style="margin-top:14px;">You're driving in anyway. Bring three people with you.</h2>
+          <p>Post your weekly schedule once: days, time blocks, seats, and what you charge. commutr fills the empty seats with verified students going exactly where you're already going.</p>
+          <a class="btn btn-light" href="#waitlist" style="margin-top:26px;">Start posting rides</a>
+        </div>
+        <div class="band-list">
+          <div>
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            Set your own seats and price
+          </div>
+          <div>
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            Approve who rides with you
+          </div>
+          <div>
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            Cover gas without doing gig work
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CTA ================= -->
+  <section class="cta" id="waitlist">
+    <div class="wrap">
+      <span class="eyebrow">Coming to a campus near you</span>
+      <h2 style="margin-top:18px;">Get commutr at your school.</h2>
+      <p>Drop your university email and we'll tell you the moment commutr opens where you are. Drivers first.</p>
+
+      <form class="waitlist" novalidate>
+        <input id="email-cta" type="email" name="email" aria-label="Your university email" placeholder="you@university.edu" autocomplete="email" required />
+        <input type="hidden" name="_subject" value="New commutr waitlist signup" />
+        <input type="hidden" name="_captcha" value="false" />
+        <button class="btn btn-primary" type="submit">Join the waitlist</button>
+      </form>
+      <p class="form-note" data-note role="status"></p>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <div>
+      <img src="assets/logo-white.png" alt="commutr" width="291" height="45" />
+      <p class="footer-tag">Your campus, connected.</p>
+    </div>
+    <nav class="footer-links" aria-label="Footer">
+      <a href="#how">How it works</a>
+      <a href="#why">Why commutr</a>
+      <a href="#drivers">For drivers</a>
+    </nav>
+  </div>
+  <div class="wrap footer-legal">
+    <span>© 2026 commutr.</span>
+    <span class="made-in">
+      Built with
+      <svg class="heart" width="13" height="13" viewBox="0 0 24 24" fill="currentColor" role="img" aria-label="love">
+        <path d="M12 21.1c-.3 0-.6-.1-.8-.3C6.3 16.8 3 13.6 3 9.6 3 6.5 5.3 4.2 8.2 4.2c1.5 0 2.9.7 3.8 1.8.9-1.1 2.3-1.8 3.8-1.8C18.7 4.2 21 6.5 21 9.6c0 4-3.3 7.2-8.2 11.2-.2.2-.5.3-.8.3Z"/>
+      </svg>
+      in Pennsylvania
+    </span>
+  </div>
+</footer>
+
+<script>
+  /* FormSubmit relays each signup to the project inbox. The address is base64 so that
+     address-harvesting crawlers, which regex the raw source for anything@anything, come up
+     empty. Anyone reading this script can still decode it, so the real fix is FormSubmit's
+     hashed endpoint: submit the form once, click the confirmation link it mails you, then
+     replace this whole expression with "https://formsubmit.co/ajax/<hash>". */
+  const WAITLIST_ENDPOINT = "https://formsubmit.co/ajax/" + atob("cC5wcmFuYXZiYWxhY2hhbmRlckBnbWFpbC5jb20=");
+
+  // Nav hairline appears once you scroll.
+  const nav = document.getElementById("nav");
+  const onScroll = () => nav.classList.toggle("is-stuck", window.scrollY > 8);
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+
+  // Jumping to a signup block should put the cursor in its email field.
+  document.querySelectorAll('a[href="#join"], a[href="#waitlist"]').forEach((link) => {
+    link.addEventListener("click", () => {
+      const target = document.querySelector(link.getAttribute("href"));
+      const field = target && target.querySelector("input[type=email]");
+      if (field) setTimeout(() => field.focus({ preventScroll: true }), 600);
+    });
+  });
+
+  // Waitlist forms (hero + bottom CTA share this behaviour).
+  document.querySelectorAll("form.waitlist").forEach((form) => {
+    const note = form.parentElement.querySelector("[data-note]");
+    const input = form.querySelector("input");
+    const button = form.querySelector("button");
+
+    const say = (msg, good) => {
+      note.textContent = msg;
+      note.classList.toggle("is-good", !!good);
+    };
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = input.value.trim();
+
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+        return say("That email doesn't look right. Try again.");
+      }
+      if (!email.toLowerCase().endsWith(".edu")) {
+        return say("commutr is students only. Please use your .edu address.");
+      }
+      if (!WAITLIST_ENDPOINT) {
+        return say("Waitlist isn't connected yet. Set WAITLIST_ENDPOINT in index.html.");
+      }
+
+      button.disabled = true;
+      say("Adding you…");
+      try {
+        const res = await fetch(WAITLIST_ENDPOINT, {
+          method: "POST",
+          headers: { Accept: "application/json" },
+          body: new FormData(form),
+        });
+        if (!res.ok) throw new Error(res.status);
+        form.reset();
+        say("You're on the list. We'll email you when commutr hits your campus.", true);
+      } catch {
+        say("Something broke on our end. Try again in a minute.");
+      } finally {
+        button.disabled = false;
+      }
+    });
+  });
+</script>
+</body>
+</html>
