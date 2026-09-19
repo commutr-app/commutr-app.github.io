@@ -78,37 +78,69 @@
   }
 
   .nav {
-    position: sticky;
-    top: 0;
+    position: fixed;
+    top: 14px;
+    left: 0;
+    right: 0;
     z-index: 50;
-    background: rgba(245, 247, 250, .78);
-    backdrop-filter: saturate(180%) blur(14px);
-    -webkit-backdrop-filter: saturate(180%) blur(14px);
-    border-bottom: 1px solid transparent;
-    transition: border-color .25s ease, background .25s ease;
+    display: flex;
+    justify-content: center;
+    padding: 0 16px;
+    pointer-events: none;
   }
-  .nav.is-stuck { border-bottom-color: var(--line); }
 
-  .nav-inner {
-    height: 68px;
+  .nav-pill {
+    pointer-events: auto;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 24px;
+    padding: 6px 6px 6px 20px;
+    background: rgba(255, 255, 255, .7);
+    backdrop-filter: saturate(180%) blur(18px);
+    -webkit-backdrop-filter: saturate(180%) blur(18px);
+    border: 1px solid rgba(0, 37, 80, .08);
+    border-radius: 999px;
+    box-shadow: 0 1px 2px rgba(0, 37, 80, .04), 0 8px 26px rgba(0, 37, 80, .07);
+    transition: background .3s ease, box-shadow .3s ease;
+  }
+  .nav.is-stuck .nav-pill {
+    background: rgba(255, 255, 255, .88);
+    box-shadow: 0 2px 6px rgba(0, 37, 80, .06), 0 14px 38px rgba(0, 37, 80, .12);
   }
 
-  .nav-logo img { width: 126px; }
+  .nav-logo img { width: 104px; }
 
   .nav-links {
+    position: relative;
     display: flex;
     align-items: center;
-    gap: 30px;
-    font-size: 15px;
+    margin: 0 10px 0 22px;
+  }
+  .nav-links a {
+    position: relative;
+    z-index: 1;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 14.5px;
     font-weight: 500;
     color: var(--muted);
+    transition: color .2s ease;
   }
-  .nav-links a { transition: color .18s ease; }
-  .nav-links a:hover { color: var(--ink); }
+  .nav-links a:hover,
+  .nav-links a.is-active { color: var(--ink); }
+
+  .nav-glide {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    border-radius: 999px;
+    background: var(--tint);
+    opacity: 0;
+    transition: transform .4s cubic-bezier(.2, .7, .2, 1), width .4s cubic-bezier(.2, .7, .2, 1), opacity .25s ease;
+  }
+
+  main { padding-top: 68px; }
 
   .btn {
     display: inline-flex;
@@ -725,6 +757,7 @@
     .features { grid-template-columns: 1fr; }
     .band { grid-template-columns: 1fr; padding: 40px 28px; border-radius: 22px; }
     .nav-links { display: none; }
+    .nav-logo { margin-right: 22px; }
     .section { padding: 72px 0; }
   }
 
@@ -756,11 +789,12 @@
 <body>
 
 <header class="nav" id="nav">
-  <div class="wrap nav-inner">
+  <div class="nav-pill">
     <a class="nav-logo" href="#top" aria-label="commutr home">
       <img src="assets/logo-navy.png" alt="commutr" width="291" height="45" />
     </a>
     <nav class="nav-links" aria-label="Main">
+      <span class="nav-glide" aria-hidden="true"></span>
       <a href="#how">How it works</a>
       <a href="#why">Why commutr</a>
       <a href="#drivers">For drivers</a>
@@ -1095,9 +1129,46 @@
   const WAITLIST_ENDPOINT = "https://formsubmit.co/ajax/a046b01c2af5a98a08e3c1b6fb1a5be3";
 
   const nav = document.getElementById("nav");
-  const onScroll = () => nav.classList.toggle("is-stuck", window.scrollY > 8);
-  onScroll();
+  const linkRow = nav.querySelector(".nav-links");
+  const glide = nav.querySelector(".nav-glide");
+  const links = [...linkRow.querySelectorAll("a")];
+  const sections = links.map((a) => document.querySelector(a.getAttribute("href")));
+  let active = null;
+
+  const moveGlide = (link) => {
+    if (!link) {
+      glide.style.opacity = "0";
+      return;
+    }
+    const appearing = glide.style.opacity !== "1";
+    if (appearing) glide.style.transition = "opacity .25s ease";
+    glide.style.width = link.offsetWidth + "px";
+    glide.style.transform = `translateX(${link.offsetLeft}px)`;
+    if (appearing) {
+      glide.offsetWidth;
+      glide.style.transition = "";
+    }
+    glide.style.opacity = "1";
+  };
+
+  const onScroll = () => {
+    nav.classList.toggle("is-stuck", window.scrollY > 8);
+    const line = window.innerHeight * 0.35;
+    const current = links.find((a, i) => {
+      const box = sections[i] && sections[i].getBoundingClientRect();
+      return box && box.top <= line && box.bottom > line;
+    }) || null;
+    if (current === active) return;
+    links.forEach((a) => a.classList.toggle("is-active", a === current));
+    active = current;
+    if (!linkRow.matches(":hover")) moveGlide(active);
+  };
+
+  links.forEach((a) => a.addEventListener("mouseenter", () => moveGlide(a)));
+  linkRow.addEventListener("mouseleave", () => moveGlide(active));
+  window.addEventListener("resize", () => moveGlide(active));
   window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
 
   document.querySelectorAll('a[href="#join"], a[href="#waitlist"]').forEach((link) => {
     link.addEventListener("click", () => {
