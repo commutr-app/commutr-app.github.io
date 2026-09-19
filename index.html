@@ -48,7 +48,7 @@
     overflow-x: hidden;
   }
 
-  h1, h2, h3 { margin: 0; line-height: 1.08; letter-spacing: -0.03em; font-weight: 900; }
+  h1, h2, h3 { margin: 0; line-height: 1.08; letter-spacing: -0.03em; font-weight: 900; text-wrap: balance; }
   p { margin: 0; }
   a { color: inherit; text-decoration: none; }
   img { display: block; max-width: 100%; height: auto; }
@@ -175,26 +175,6 @@
     padding: 72px 0 72px;
   }
 
-  .hero::before,
-  .hero::after {
-    content: "";
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(70px);
-    z-index: 0;
-    pointer-events: none;
-  }
-  .hero::before {
-    width: 720px; height: 720px;
-    right: -180px; top: -280px;
-    background: radial-gradient(circle, rgba(0,61,122,.16), rgba(0,61,122,0) 66%);
-  }
-  .hero::after {
-    width: 520px; height: 520px;
-    left: -220px; bottom: -180px;
-    background: radial-gradient(circle, rgba(15,143,102,.12), rgba(15,143,102,0) 68%);
-  }
-
   .hero-grid {
     position: relative;
     z-index: 1;
@@ -211,12 +191,7 @@
     margin: 0;
     font-size: clamp(42px, 5.6vw, 66px);
   }
-  .hero h1 .accent {
-    background: linear-gradient(100deg, var(--navy-600), #0f8f66);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
+  .hero h1 .accent { color: var(--navy-600); }
 
   .hero-sub {
     margin-top: 22px;
@@ -269,7 +244,6 @@
     font-size: 13.5px;
     color: #7b8897;
   }
-  .cta .form-promise { margin-left: auto; margin-right: auto; }
 
   .hero-trust {
     margin-top: 26px;
@@ -287,14 +261,6 @@
     position: relative;
     display: flex;
     justify-content: center;
-  }
-
-  .stage-glow {
-    position: absolute;
-    inset: 8% -6% 2%;
-    background: radial-gradient(60% 55% at 50% 45%, rgba(0,37,80,.16), rgba(0,37,80,0) 70%);
-    filter: blur(20px);
-    z-index: 0;
   }
 
   .phone {
@@ -613,7 +579,7 @@
   .section { padding: 92px 0; }
   .section-tight { padding-top: 0; }
   .section-head { max-width: 640px; }
-  .section-head h2 { margin-top: 16px; font-size: clamp(32px, 3.8vw, 44px); }
+  .section-head h2 { font-size: clamp(32px, 3.8vw, 44px); }
   .section-head p { margin-top: 16px; color: var(--muted); font-size: 18px; }
 
   .steps {
@@ -642,34 +608,41 @@
   .step h3 { margin-top: 14px; font-size: 21px; }
   .step p { margin-top: 10px; color: var(--muted); font-size: 15.5px; }
 
-  .features {
-    margin-top: 52px;
+  .stats {
+    margin-top: 48px;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 22px;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid var(--line-strong);
   }
-  .feature {
-    display: flex;
-    gap: 16px;
-    padding: 26px;
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-sm);
-    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
-  }
-  .feature:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--line-strong); }
-  .feature-icon {
-    width: 42px; height: 42px;
-    flex: none;
-    border-radius: 12px;
-    display: grid;
-    place-items: center;
-    background: var(--tint);
+  .stat { padding: 26px 28px 0 0; }
+  .stat + .stat { padding-left: 28px; border-left: 1px solid var(--line); }
+  .stat-num {
+    font-size: clamp(44px, 5vw, 60px);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    line-height: 1;
     color: var(--navy);
   }
-  .feature h3 { font-size: 18px; }
-  .feature p { margin-top: 8px; color: var(--muted); font-size: 15.5px; }
+  .stat p { margin-top: 12px; max-width: 17em; color: var(--muted); font-size: 16px; }
+  .source { margin-top: 26px; font-size: 13.5px; color: #7b8897; }
+
+  .compare { margin-top: 72px; max-width: 860px; }
+  .compare h3 { font-size: 22px; }
+  .compare-table { margin-top: 16px; width: 100%; border-collapse: collapse; }
+  .compare-table th,
+  .compare-table td {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    vertical-align: top;
+    font-size: 16.5px;
+  }
+  .compare-table th { width: 28%; font-weight: 700; }
+  .compare-table td { color: var(--muted); }
+  .compare-table tr.us th,
+  .compare-table tr.us td { border-bottom: 0; background: var(--tint); color: var(--navy); }
+  .compare-table tr.us th { border-radius: 14px 0 0 14px; }
+  .compare-table tr.us td { border-radius: 0 14px 14px 0; font-weight: 500; }
 
   .band {
     background: linear-gradient(150deg, var(--navy), var(--navy-900));
@@ -682,8 +655,7 @@
     align-items: center;
     box-shadow: var(--shadow-md);
   }
-  .band .eyebrow { color: #7fb3e8; }
-  .band h2 { margin-top: 14px; font-size: clamp(28px, 3.4vw, 40px); }
+  .band h2 { font-size: clamp(28px, 3.4vw, 40px); }
   .band .btn { margin-top: 26px; }
   .band p { margin-top: 16px; color: rgba(255,255,255,.72); font-size: 17px; max-width: 34em; }
   .band-list {
@@ -710,7 +682,8 @@
   .cta h2 { margin-top: 18px; font-size: clamp(32px, 4.4vw, 50px); }
   .cta p { margin: 18px auto 0; max-width: 32em; color: var(--muted); font-size: 18px; }
   .cta .waitlist { margin: 32px auto 0; }
-  .cta .form-note { text-align: center; }
+  .cta .form-note { margin-top: 12px; font-size: 14px; text-align: center; }
+  .cta .form-promise { margin: 4px auto 0; font-size: 13.5px; color: #7b8897; }
 
   .footer {
     margin-top: 64px;
@@ -754,7 +727,6 @@
     .hero-inner { text-align: center; }
     .hero-trust { justify-content: center; }
     .steps { grid-template-columns: 1fr; }
-    .features { grid-template-columns: 1fr; }
     .band { grid-template-columns: 1fr; padding: 40px 28px; border-radius: 22px; }
     .nav-links { display: none; }
     .nav-logo { margin-right: 22px; }
@@ -763,6 +735,11 @@
 
   @media (max-width: 700px) {
     .float { display: none; }
+    .stats { grid-template-columns: 1fr; }
+    .stat, .stat + .stat { padding: 22px 0; border-left: 0; }
+    .stat + .stat { border-top: 1px solid var(--line); }
+    .compare-table th, .compare-table td { padding: 16px 14px; font-size: 15.5px; }
+    .compare-table th { width: 34%; }
   }
 
   @media (max-width: 460px) {
@@ -795,8 +772,8 @@
     </a>
     <nav class="nav-links" aria-label="Main">
       <span class="nav-glide" aria-hidden="true"></span>
-      <a href="#how">How it works</a>
       <a href="#why">Why commutr</a>
+      <a href="#how">How it works</a>
       <a href="#drivers">For drivers</a>
     </nav>
     <a class="btn btn-primary btn-sm" href="#join">Join the waitlist</a>
@@ -842,7 +819,6 @@
       </div>
 
       <div class="stage">
-        <div class="stage-glow" aria-hidden="true"></div>
 
         <div class="float float-a" aria-hidden="true">
           <span class="float-badge">
@@ -976,80 +952,66 @@
     </div>
   </section>
 
-  <section class="section" id="how">
+  <section class="section" id="why">
     <div class="wrap">
       <div class="section-head">
-        <span class="eyebrow">How it works</span>
-        <h2>Three taps between your bed and your lecture hall.</h2>
-        <p>No surge pricing, no strangers, no 6:30 bus. Just the people already making your exact trip.</p>
+        <h2>Walking is fine until it rains.</h2>
+        <p>Most off-campus students live close enough to walk, so that's what they do. Then the weather turns, and a ten-minute walk becomes a reason to stay home.</p>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-num">67%</div>
+          <p>commute to campus five or more days a week</p>
+        </div>
+        <div class="stat">
+          <div class="stat-num">44%</div>
+          <p>of students within walking distance say bad weather affects their commute</p>
+        </div>
+        <div class="stat">
+          <div class="stat-num">26%</div>
+          <p>of students within walking distance have skipped class because of the weather</p>
+        </div>
+      </div>
+      <p class="source">From commutr's survey of off-campus students, spring 2026.</p>
+
+      <div class="compare">
+        <h3>How students get to class today</h3>
+        <table class="compare-table">
+          <tbody>
+            <tr><th scope="row">Walk</th><td>Free, until it's pouring.</td></tr>
+            <tr><th scope="row">Ask a friend</th><td>Works until their schedule changes or they sleep in.</td></tr>
+            <tr><th scope="row">Uber or Lyft</th><td>Priced for the occasional trip. Twice a day, five days a week, it adds up fast.</td></tr>
+            <tr><th scope="row">The bus</th><td>Runs on its own timetable, which rarely matches your classes.</td></tr>
+            <tr class="us"><th scope="row">commutr</th><td>A student driver who lives near you, at your class time, every week, for $3 to $5 a ride.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-tight" id="how">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Set it up once, then just show up.</h2>
+        <p>Someone near you already makes your trip at your time. commutr puts you in the passenger seat and keeps you there every week.</p>
       </div>
 
       <div class="steps">
         <article class="step">
           <div class="step-num">01</div>
           <h3>Verify your .edu</h3>
-          <p>Sign up with your university email. Everyone on commutr is a real, verified student at your school. No one else gets in.</p>
+          <p>Sign up with your university email. Everyone on commutr is a verified student at your school, and no one else can join.</p>
         </article>
         <article class="step">
           <div class="step-num">02</div>
           <h3>Find your route</h3>
-          <p>Pick the day, the time block and your pickup point. See exactly who's driving that trip, what they drive, and what they charge.</p>
+          <p>Pick the day, the time block and your pickup point. You'll see who's driving that trip and what they charge before you book.</p>
         </article>
         <article class="step">
           <div class="step-num">03</div>
           <h3>Keep the seat</h3>
-          <p>Book once and it repeats every week. Same driver, same 7:40, same $3, and a tap to cancel when class does.</p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section class="section section-tight" id="why">
-    <div class="wrap">
-      <div class="section-head">
-        <span class="eyebrow">Why commutr</span>
-        <h2>Rideshare apps weren't built for a 10-minute commute you make 400 times a year.</h2>
-      </div>
-
-      <div class="features">
-        <article class="feature">
-          <span class="feature-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.5 3.2 8.3 8 9 4.8-.7 8-4.5 8-9V6l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg>
-          </span>
-          <div>
-            <h3>Students only, verified</h3>
-            <p>Every account is tied to a university email, and every trip ends with a rating. You're riding with classmates, not the internet.</p>
-          </div>
-        </article>
-
-        <article class="feature">
-          <span class="feature-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2v4M7 2v4M3 10h18"/><rect x="3" y="4" width="18" height="18" rx="3"/><path d="m8.5 15.5 2 2 4-4"/></svg>
-          </span>
-          <div>
-            <h3>Built for the repeat</h3>
-            <p>commutr is designed around your schedule, not one-off trips. Post or book a recurring ride once and the whole semester is handled.</p>
-          </div>
-        </article>
-
-        <article class="feature">
-          <span class="feature-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-5.2 7-11a7 7 0 1 0-14 0c0 5.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.6"/></svg>
-          </span>
-          <div>
-            <h3>Pickups where you live</h3>
-            <p>Rides start at real places: your complex, your lot, your corner. Never a pin you have to walk five minutes to find.</p>
-          </div>
-        </article>
-
-        <article class="feature">
-          <span class="feature-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M14.5 9.2a2.7 2.7 0 0 0-2.5-1.4c-1.5 0-2.6.8-2.6 2s1.1 1.7 2.6 2 2.7.8 2.7 2.1-1.2 2-2.7 2a2.8 2.8 0 0 1-2.6-1.5M12 6v12"/></svg>
-          </span>
-          <div>
-            <h3>A price, not a fare</h3>
-            <p>Drivers set a flat cost per seat to cover gas and parking. You see it before you book, and it doesn't move because it started raining.</p>
-          </div>
+          <p>Book once and the seat is yours at that time every week. Class cancelled? Cancel the ride in a tap.</p>
         </article>
       </div>
     </div>
@@ -1059,7 +1021,6 @@
     <div class="wrap">
       <div class="band">
         <div>
-          <span class="eyebrow">For drivers</span>
           <h2>You're driving in anyway. Bring three people with you.</h2>
           <p>Post your weekly schedule once: days, time blocks, seats, and what you charge. commutr fills the empty seats with verified students going exactly where you're already going.</p>
           <a class="btn btn-light" href="#waitlist">Start posting rides</a>
@@ -1086,7 +1047,7 @@
     <div class="wrap">
       <span class="eyebrow">Coming to a campus near you</span>
       <h2>Get commutr at your school.</h2>
-      <p>Drop your university email and we'll tell you the moment commutr opens where you are. Drivers first.</p>
+      <p>We're starting at Penn State. Drop your university email and we'll tell you the moment commutr opens where you are.</p>
 
       <form class="waitlist" novalidate>
         <input id="email-cta" type="email" name="email" aria-label="Your university email" placeholder="you@university.edu" autocomplete="email" required />
@@ -1108,8 +1069,8 @@
       <p class="footer-tag">Your campus, connected.</p>
     </div>
     <nav class="footer-links" aria-label="Footer">
-      <a href="#how">How it works</a>
       <a href="#why">Why commutr</a>
+      <a href="#how">How it works</a>
       <a href="#drivers">For drivers</a>
     </nav>
   </div>
